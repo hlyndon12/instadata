@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+
+    {% block body %}
+    <div class="ui inverted segment">
+        <div class="ui inverted form error">
+            
+            <form action={% url 'login' %} class="ui form" method="POST">
+                {% csrf_token%}
+                <div class="field">
+                    <input type="text" name="username" placeholder="username">
+                </div>
+                <div class="field">
+                    <input type="password" name="password" placeholder="password">
+                </div>
+                <div style="display: flex;
+                justify-content: center;
+                align-items: center;">
+                    <button class="ui submit button" type="submit">login</button>
+                    <button class="ui submit button" type="submit"><a href="{% url 'register' %}" style="color: purple;">Register</a></button>
+                </div>
+                <div class=" error inverted message">
+                    <ul>
+                      {% for message in messages %}
+                        <li>{{message}}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+            </form>
+            
+        </div>
+    </div>
+    {% endblock body %}
+
+    {% block scripts %}
+
+    {% endblock scripts %}

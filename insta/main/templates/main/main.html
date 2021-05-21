@@ -1,0 +1,87 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container">
+    <div class="nav">
+        <h1>Data </h1>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'logout' %}">logout</a>
+        {% else %}
+        <a href="{% url 'login' %}">login</a>
+        {% endif %}
+        <a href="{% url 'register' %}">register</a>
+        <a href="{% url 'update-view' %}">update</a>
+        <a href="{% url 'update-city' %}">Update City</a>
+    
+    </div>  
+    <div class="slider-container">
+        <p>
+            <label for="amount">Follower range:</label>
+            <input type="text" id="following-amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div id="follower-range"></div>
+    </div>
+    <div class="slider-container">
+        <p>
+            <label for="amount">following range:</label>
+            <input type="text" id="follower-amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        </p>
+        <div id="following-range"></div>
+    </div>
+    <form method="get" class="form-align">
+        {{ range.form.as_p }}
+            <span class="step-links">
+                {% if data.has_previous %}
+                    <input type="submit" name="page" value="1" placeholder="previous">
+                    <input type="submit" name="page" value="{{ data.previous_page_number }}" placeholder="first">
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ data.number }} of {{ data.paginator.num_pages }}.
+                </span>
+        
+                {% if data.has_next %}               
+                    <input type="submit" name="page" value="{{ data.next_page_number }}" placeholder="next">
+                    <input type="submit" name="page" value="{{ data.paginator.num_pages }}" placeholder="last">
+                {% endif %}
+            </span>
+
+        <input type="submit" />
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>followers</th>
+                <th>following</th>
+                <th>unername</th>
+                <th>bio</th>
+                <th>contact</th>
+                <th>category</th>
+                <th>city</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in data %}
+                <tr>
+                    <td>{{ object.follower_count }}</td>
+                    <td>{{ object.following_count }}</td>
+                    <td>{{ object.name }}</td>
+                    <td>{{ object.bio }}</td>
+                    <td>{{ object.contact }}</td>
+                    <td>{% for category in object.category.all %}{{category}}{% endfor %}</td>
+                    <td>{% for city in object.city.all %}{{ city }} {% endfor %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<form method="GET">
+
+</form>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'slider.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Registeration page{% endblock title %}
+
+
+    {% block body %}
+    <div class="ui inverted segment">
+        <div class="ui inverted form error">
+            <form action={% url 'register' %} class="ui form" method="POST">
+                {% csrf_token%}
+                <div class="two fields">
+                    <div class="field">
+                        <input type="text" name="first_name" placeholder="First Name">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="last_name" placeholder="Last Name">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field error">
+                        <input type="text" name="username" placeholder="Usernameame">
+                    </div>
+                    <div class="field error">
+                        <input type="email" name="email" placeholder="email">
+                    </div>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <input type="password" name="password1" placeholder="Password">
+                    </div>
+                    <div class="field error">
+                        <input type="password" name="password2" placeholder="Confirm Password">
+                    </div>
+                </div>
+                
+                <div style="display: flex;
+                justify-content: center;
+                align-items: center;">
+                    <button class="ui submit button" type="submit">Submit</button>
+                </div>
+                <div class=" error inverted message">
+                  <ul>
+                    {% for message in messages %}
+                      <li>{{message}}</li>
+                    {% endfor %}
+                  </ul>
+                </div>          
+            </form>
+        </div>
+    </div>
+
+    {% endblock body %}
+
+    {% block scripts %}
+    
+<script>
+$('.ui.form').form({
+    on: 'blur',
+    fields: {
+      email: {
+        identifier  : 'email',
+        rules: [
+          {
+            type   : 'email',
+            prompt : 'Please enter a valid e-mail'
+          }
+        ]
+      },
+      password: {
+        identifier  : 'password2',
+        rules: [
+          {
+            type   : 'match[password1]',
+            prompt : "Passwords don't match"
+          }
+        ]
+      },
+      username: {
+          identifier : 'username',
+          rules: [
+              {
+              type   : 'empty',
+              prompt : 'please enter username'
+            }
+          ]
+      }
+    }
+  });
+</script>
+
+    {% endblock scripts %}
